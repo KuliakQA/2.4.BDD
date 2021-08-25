@@ -57,7 +57,7 @@ class MoneyTransferTest {
     @Test
     public void shouldNotTransferMoneyIfAmountMoreBalance() {
         var dashboardPage = new DashboardPage();
-        int amount = 15_000;
+        int amount = 20_000;
 
         var transfer = firstCardButton();
         transfer.transferFromCardToCard(amount, getSecondCardNumber());
