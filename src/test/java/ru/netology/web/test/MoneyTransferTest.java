@@ -8,10 +8,12 @@ import ru.netology.web.page.LoginPage;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.web.data.DataHelper.*;
-import static ru.netology.web.page.DashboardPage.firstCardButton;
-import static ru.netology.web.page.DashboardPage.secondCardButton;
+//import static ru.netology.web.page.DashboardPage.firstCardButton;
+//import static ru.netology.web.page.DashboardPage.secondCardButton;
 
 class MoneyTransferTest {
+    DashboardPage dashboardPage;
+
     @BeforeEach
     public void setUp() {
         open("http://localhost:9999");
@@ -20,16 +22,16 @@ class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = getVerificationCodeFor(authInfo);
         verificationPage.validVerify(verificationCode);
+        dashboardPage = verificationPage.validVerify(verificationCode);
     }
 
     @Test
     public void shouldReplenishedFirstCard() {
-        var dashboardPage = new DashboardPage();
-        var firstCardBalanceStart = dashboardPage.getFirstCardBalance();
+               var firstCardBalanceStart = dashboardPage.getFirstCardBalance();
         var secondCardBalanceStart = dashboardPage.getSecondCardBalance();
         int amount = 10_000;
 
-        var transfer = firstCardButton();
+        var transfer = dashboardPage.firstCardButton();
         transfer.transferFromCardToCard(amount, getSecondCardNumber());
         var firstCardBalanceResult = firstCardBalanceStart + amount;
         var secondCardBalanceResult = secondCardBalanceStart - amount;
@@ -40,12 +42,11 @@ class MoneyTransferTest {
 
     @Test
     public void shouldReplenishedSecondCard() {
-        var dashboardPage = new DashboardPage();
         var firstCardBalanceStart = dashboardPage.getFirstCardBalance();
         var secondCardBalanceStart = dashboardPage.getSecondCardBalance();
         int amount = 10_000;
 
-        var transfer = secondCardButton();
+        var transfer = dashboardPage.firstCardButton();
         transfer.transferFromCardToCard(amount, getFirstCardNumber());
         var firstCardBalanceResult = firstCardBalanceStart - amount;
         var secondCardBalanceResult = secondCardBalanceStart + amount;
@@ -56,10 +57,9 @@ class MoneyTransferTest {
 
     @Test
     public void shouldNotTransferMoneyIfAmountMoreBalance() {
-        var dashboardPage = new DashboardPage();
         int amount = 20_000;
 
-        var transfer = firstCardButton();
+        var transfer = dashboardPage.firstCardButton();
         transfer.transferFromCardToCard(amount, getSecondCardNumber());
         transfer.getErrorLimit();
     }

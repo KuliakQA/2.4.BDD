@@ -7,6 +7,7 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class TransferPage {
+
     private SelenideElement titleText = $(byText("Пополнение карты"));
     private SelenideElement sum = $("[data-test-id=amount] [class='input__control']");
     private SelenideElement fromWhichCard = $("[data-test-id=from] [class='input__control']");
