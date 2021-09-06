@@ -1,5 +1,6 @@
 package ru.netology.web.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.web.data.DataHelper;
 
@@ -21,8 +22,10 @@ public class TransferPage {
         replenishButton.click();
         new DashboardPage();
     }
+
     // Перевод суммы превышающий лимит на карте;
     public void getErrorLimit() {
-        $(byText("Сумма превышает допустимый лимит!"));
+        $(byText("Сумма превышает допустимый лимит!"))
+                .shouldBe(Condition.visible);
     }
 }
